@@ -57,6 +57,26 @@ export async function parseUrlApi(url) {
   return { ok: true, result: data.result, sourceUrl: trimmed }
 }
 
+function mediaQuery(pageUrl, { quality, format, isAudio } = {}) {
+  const q = new URLSearchParams({
+    url: pageUrl,
+    quality: quality || 'best'
+  })
+  if (isAudio && format) {
+    q.set('format', format)
+    q.set('audio', 'true')
+  }
+  return q.toString()
+}
+
+export function downloadJobUrl(pageUrl, opts = {}) {
+  return `/api/download?${mediaQuery(pageUrl, opts)}`
+}
+
+export function streamJobUrl(pageUrl, opts = {}) {
+  return `/api/stream?${mediaQuery(pageUrl, opts)}`
+}
+
 export async function resolveItemApi(url) {
   try {
     const res = await fetch('/api/resolve-item', {

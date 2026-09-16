@@ -6,3 +6,6 @@ __pycache__
 .DS_Store
 *.local
 .pytest_cache
+backend/cookies.txt
+backend/_tmp_cookies.txt
+backend/__pycache__

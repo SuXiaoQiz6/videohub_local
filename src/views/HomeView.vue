@@ -58,15 +58,19 @@ function fill(demo) {
     </form>
 
     <div class="examples">
-      <button class="chip" type="button" :disabled="parsing()" @click="fill(DEMO.single)">
-        YouTube 单视频（可测）
-      </button>
       <button class="chip" type="button" :disabled="parsing()" @click="fill(DEMO.collection)">
-        B 站示例（需 cookies）
+        B 站公开视频
+      </button>
+      <button class="chip" type="button" :disabled="parsing()" @click="fill(DEMO.douyin)">
+        抖音分享短链
+      </button>
+      <button class="chip" type="button" :disabled="parsing()" @click="fill(DEMO.single)">
+        YouTube
       </button>
       <button class="chip" type="button" :disabled="parsing()" @click="fill(DEMO.invalid)">
         失败示例
       </button>
     </div>
+    <p class="hint">抖音请用 App「分享 → 复制链接」</p>
   </main>
 </template>

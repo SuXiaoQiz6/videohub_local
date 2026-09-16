@@ -20,16 +20,28 @@ const pageItems = computed(() => {
 
 const selectedSet = computed(() => new Set(props.selectedIds))
 const allSelected = computed(
-  () => props.selectedIds.length === props.collection.items.length
+  () =>
+    props.collection.items.length > 0 &&
+    props.selectedIds.length === props.collection.items.length
 )
 const masterClass = computed(() => {
   if (allSelected.value) return 'is-all'
-  return 'is-partial'
+  if (props.selectedIds.length > 0) return 'is-partial'
+  return ''
 })
+
+function ensureCurrentSelected(ids) {
+  const current = props.currentId
+  if (current && ids.includes(current)) return ids
+  if (current) return [current]
+  const first = props.collection.items[0]?.id
+  return first ? [first] : ids
+}
 
 function toggleMaster() {
   if (allSelected.value) {
-    emit('update:selectedIds', [props.currentId])
+    // 取消全选：只保留当前详情这一集
+    emit('update:selectedIds', ensureCurrentSelected([]))
   } else {
     emit(
       'update:selectedIds',
@@ -43,8 +55,10 @@ function toggleItem(id, checked) {
   if (checked) {
     next.add(id)
   } else {
+    // 至少保留一个勾选
     if (next.size <= 1) return
     next.delete(id)
+    if (next.size === 0) return
   }
   emit('update:selectedIds', [...next])
 }
@@ -52,6 +66,10 @@ function toggleItem(id, checked) {
 function viewDetails(id) {
   if (id === props.currentId) return
   emit('update:currentId', id)
+}
+
+function isLastSelected(id) {
+  return selectedSet.value.has(id) && props.selectedIds.length === 1
 }
 
 const selectedSummary = computed(() => {
@@ -94,6 +112,7 @@ const selectedSummary = computed(() => {
       <input
         type="checkbox"
         :checked="selectedSet.has(item.id)"
+        :disabled="isLastSelected(item.id)"
         :aria-label="'选择 ' + item.title"
         @change="toggleItem(item.id, $event.target.checked)"
       />

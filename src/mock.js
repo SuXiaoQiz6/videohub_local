@@ -86,10 +86,10 @@ function pad(n) {
 }
 
 export const DEMO = {
-  // YouTube 公开视频（无 cookies 通常可解析）
   single: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
-  // B 站 / 抖音多数环境需要 backend/cookies.txt（见 README）
   collection: 'https://www.bilibili.com/video/BV1GJ411x7h7',
+  douyin: 'https://v.douyin.com/e3x2fjE/',
+  x: 'https://x.com/Matt59011998/status/2099886919412760666',
   audio: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
   invalid: 'notaurl'
 }
@@ -188,7 +188,7 @@ export function parseUrl(raw) {
     return {
       ok: false,
       code: 'format',
-      message: 'URL 格式错误。请输入 B 站、抖音或 YouTube 的音视频页面链接。'
+      message: 'URL 格式错误。请输入 B 站、抖音、YouTube 或 X 的音视频页面链接。'
     }
   }
   const lower = url.toLowerCase()
@@ -201,10 +201,13 @@ export function parseUrl(raw) {
   if (lower.includes('youtube.com') || lower.includes('youtu.be')) {
     return { ok: true, result: structuredClone(AUDIO), sourceUrl: url }
   }
+  if (lower.includes('x.com') || lower.includes('twitter.com') || lower.includes('t.co/')) {
+    return { ok: true, result: structuredClone(SINGLE), sourceUrl: url }
+  }
   return {
     ok: false,
     code: 'platform',
-    message: '暂不支持该平台。MVP 仅支持 B 站、抖音、YouTube。'
+    message: '暂不支持该平台。MVP 仅支持 B 站、抖音、YouTube、X。'
   }
 }
 
