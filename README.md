@@ -85,8 +85,6 @@ videohub-prototype/
 
 ## 文档
 
-- [`docs/阶段性补充需求.md`](docs/阶段性补充需求.md) — 相对原 PRD 的增量约定与验收口径  
-- [`docs/VideoHub产品需求文档.docx`](docs/VideoHub产品需求文档.docx) — 产品需求原文  
 - [`project_context.md`](project_context.md) — 当前实现状态、架构决策与已知限制  
 
 ## 已知限制（MVP）
