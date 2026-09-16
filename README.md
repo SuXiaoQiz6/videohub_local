@@ -2,18 +2,16 @@
 
 本机可运行的音视频解析 / 预览 / 下载 MVP。粘贴公开页面链接 → 后端解析 → 浏览器原生播放器预览 → 交给 Chrome / Edge / 夸克下载栏保存。
 
-> 演示对齐常见「鱼皮式」路径：**平台专用解析或 yt-dlp 在服务端完成，浏览器只负责保存文件**。
+**平台专用解析或 yt-dlp 在服务端完成，浏览器只负责保存文件**。
 
 ## 功能概览
 
 | 能力 | 说明 |
 |------|------|
 | 解析 | B 站、抖音、YouTube；另支持 X（Twitter）公开原生视频 |
-| 预览 | `/api/stream` 代理，与下载分离；合集可切换分 P |
-| 下载 | `/api/download`；合集多选一次最多 5 个浏览器任务 |
+| 预览 | `/api/stream` 代理，与下载分离；合集可切换 |
+| 下载 | `/api/download`；可支持合集视频下载 |
 | 导航 | 返回首页写入历史；刷新可恢复当次解析；返回不中断已开始的下载 |
-
-首页示例芯片仅展示：**B 站公开视频 / 抖音短链 / YouTube / 失败示例**。X 不在首页露出，但直接粘贴 `x.com` / `twitter.com` 含 `/status/` 的链接仍可解析下载。
 
 ## 技术栈
 
@@ -47,7 +45,7 @@ start-frontend.bat
 
 - **B 站**：官方 `view` / `pagelist` / `playurl`；公开视频一般无需 Cookie；未登录渐进 MP4 常见上限约 720p。
 - **抖音**：优先 App「分享 → 复制链接」短链（`v.douyin.com`）；支持从整段分享文案中抽出 URL。
-- **YouTube**：`yt-dlp`（优先 `android_vr` / `android` 客户端）。若本机风控较严，可把 Netscape 格式的 `cookies.txt` 放到 `backend/cookies.txt`（可选，已在 `.gitignore`）。预览与下载均走本机临时文件再流式输出，避免 CDN 直连 403。
+- **YouTube**：`yt-dlp`（优先 `android_vr` / `android` 客户端）。预览与下载均走本机临时文件再流式输出，避免 CDN 直连 403。
 - **X**：syndication → fxtwitter / vxtwitter → yt-dlp；敏感帖 syndication 可能 tombstone，会继续走镜像接口。仅公开含原生视频的帖子；外链、纯图文、已删内容会失败。
 
 ## API（摘要）
